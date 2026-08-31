@@ -4,10 +4,6 @@ server:
 spring:
   application:
     name: admin-pro
-  # Day 1-8 暂不依赖 Redis：排除 Redisson 自动配置（无 Redis 也可启动）
-  # Day 9-10 接入 Redis 缓存/分布式锁时删除本行
-  autoconfigure:
-    exclude: org.redisson.spring.starter.RedissonAutoConfigurationV2
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${DB_URL:jdbc:mysql://localhost:3306/admin_pro?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true}
@@ -21,8 +17,6 @@ spring:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
-      # 默认不设密码；如需密码：set REDIS_PASSWORD=xxx 即可（null 默认值避免 Redisson 误发 AUTH）
-      password: ${REDIS_PASSWORD:#{null}}
       database: 0
       timeout: 5s
 

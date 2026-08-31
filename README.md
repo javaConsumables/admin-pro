@@ -21,6 +21,7 @@ JDK 17+ · SpringBoot 3.2.x · MyBatis-Plus 3.5.x · MySQL 8 · Redis 7 · JWT (
 > 本机 Docker Desktop 端口转发异常，已改用原生 Windows Redis（redis-windows 8.10.1，msys2 构建）。
 > 位置：`C:\Users\yang\Documents\Deepseek\redis-win`
 
+- **应用启动前必须先启动 Redis**（应用默认启用 Redisson，连不上会启动失败）
 - 启动：双击 `redis-win\start-redis.bat`（或后台运行 `redis-server.exe --port 6379`）
 - 停止：双击 `redis-win\stop-redis.bat`
 - 验证：`redis-win\Redis-8.10.1-Windows-x64-msys2\redis-cli.exe ping` → `PONG`
