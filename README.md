@@ -1,6 +1,7 @@
 # admin-pro 后台管理系统（个人实战项目）
 
 > GitHub 仓库：https://github.com/javaConsumables/admin-pro
+> 在线演示：http://106.15.202.136:8080 （测试账号 admin / admin123）
 > 技术栈：SpringBoot 3 + MyBatis-Plus + MySQL 8 + Redis + JWT + Redisson + Docker
 
 ## 技术栈
@@ -64,6 +65,9 @@ curl http://服务器IP:8080/api/health
 ```
 
 首次启动时 mysql 容器会自动执行 `db/init.sql` 建表并写入种子数据。应用配置通过环境变量注入（DB_URL/DB_USERNAME/DB_PASSWORD/REDIS_HOST/REDIS_PORT）。
+
+> 低带宽服务器（如国内 ECS 访问 Maven 很慢）可改用运行时部署：本机构建 jar 后
+> `docker compose -f docker-compose.runtime.yml up -d --build`（配合 Dockerfile.runtime，跳过服务器端 Maven 构建）。
 
 ## 目录结构
 
