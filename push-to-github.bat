@@ -14,7 +14,7 @@ cd /d "%~dp0"
 git branch -M main
 git remote remove origin 2>nul
 if "%GH_USER%"=="" set GH_USER=javaConsumables
-git remote add origin git@github.com:%GH_USER%/admin-pro.git
+git remote add origin https://github.com/%GH_USER%/admin-pro.git
 git push -u origin main
 if %errorlevel%==0 (
   echo.
