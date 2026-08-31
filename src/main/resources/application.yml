@@ -31,6 +31,11 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
 
+adminpro:
+  jwt:
+    secret: 6a9cc3941eb147ffa9265e848e2427303cb5233bb447f56dfc19a02501a2ec79
+    expire-seconds: 7200
+
 logging:
   level:
     com.adminpro: debug

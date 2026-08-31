@@ -9,7 +9,7 @@ JDK 17+ · SpringBoot 3.2.x · MyBatis-Plus 3.5.x · MySQL 8 · Redis 7 · JWT (
 ## 里程碑进度
 
 - [x] Day 1-2 工程搭建：SpringBoot 3 工程、MySQL 连接、统一返回体、全局异常、MyBatis-Plus 分页、健康检查
-- [ ] Day 3-4 登录鉴权：用户表 + JWT 签发/校验 + 拦截器
+- [x] Day 3-4 登录鉴权：sys_user 建表 + JWT 签发/校验 + 拦截器 + 登录态存 Redis（登出/踢人）+ 用户管理 CRUD
 - [ ] Day 5-6 RBAC：角色/权限 + 注解 + AOP 校验
 - [ ] Day 7-8 操作日志 AOP
 - [ ] Day 9-10 文件上传 + Redis 缓存 + 防重复提交
@@ -54,6 +54,23 @@ JDK 17+ · SpringBoot 3.2.x · MyBatis-Plus 3.5.x · MySQL 8 · Redis 7 · JWT (
    ```bash
    curl http://localhost:8080/api/health
    ```
+
+## 接口一览（Day 3-4）
+
+| 方法 | 路径 | 说明 | 鉴权 |
+|---|---|---|---|
+| GET | /api/health | 健康检查 | 否 |
+| POST | /api/auth/login | 登录（返回 JWT + 用户信息） | 否 |
+| POST | /api/auth/logout | 登出（删除 Redis 登录态） | 是 |
+| GET | /api/auth/me | 当前登录用户 | 是 |
+| GET | /api/users/page | 用户分页查询（排除密码/盐） | 是 |
+| POST | /api/users | 新建用户（默认密码 123456，加盐哈希） | 是 |
+| PUT | /api/users/{id}/status | 启用/禁用 | 是 |
+| PUT | /api/users/{id}/password | 重置密码 | 是 |
+
+**鉴权机制**：请求头 `Authorization: Bearer <token>`；JWT（HS512，jjwt 0.12）无状态签名，登录态同时写 Redis（`adminpro:token:{userId}`），新登录顶掉旧 token，登出即失效。
+
+**种子账号**：`admin / admin123`（数据见 `db/init.sql`）
 
 ## 目录结构
 
