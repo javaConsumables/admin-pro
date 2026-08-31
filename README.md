@@ -67,6 +67,9 @@ curl http://服务器IP:8080/api/health
 
 首次启动时 mysql 容器会自动执行 `db/init.sql` 建表并写入种子数据。应用配置通过环境变量注入（DB_URL/DB_USERNAME/DB_PASSWORD/REDIS_HOST/REDIS_PORT）。
 
+> ⚠️ Docker 首次初始化 MySQL 时中文可能双重编码（昵称/菜单名乱码），修复：
+> `cat db/fix-chinese-encoding.sql | docker exec -i admin-pro-mysql mysql -uroot -proot`
+>
 > 低带宽服务器（如国内 ECS 访问 Maven 很慢）可改用运行时部署：本机构建 jar 后
 > `docker compose -f docker-compose.runtime.yml up -d --build`（配合 Dockerfile.runtime，跳过服务器端 Maven 构建）。
 
