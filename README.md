@@ -38,6 +38,22 @@ dev 分支开发 → 测试通过 → 合并到 main → main 用于部署
   ```
 - **自动部署分支由 `deploy-branch.txt` 控制**：文件内容为 `main` 或 `dev`，修改并提交即可切换（无需改 workflow）。默认 `main`。
 
+**切换部署分支（2 步）：**
+
+1. 修改 `deploy-branch.txt` 内容：`main` 或 `dev`，提交并推送到对应分支；
+2. 之后**只有 push 到配置的分支才会触发部署**，另一个分支 push 会自动跳过（GitHub Actions 运行记录中部署步骤显示 skipped）。
+
+示例——切换到 dev 部署：
+
+```bash
+# dev 分支上把 deploy-branch.txt 改为 dev 并推送
+echo "dev" > deploy-branch.txt
+git add deploy-branch.txt && git commit -m "switch deploy branch to dev"
+git push origin dev        # 这次 push 就会部署 dev 的代码
+```
+
+> 注：合并方式用本地 merge 或 GitHub PR 均可（PR 合并同样触发 push 事件）。
+
 ### 自动部署（GitHub Actions）
 
 `main` 分支有提交时，流水线自动：构建 jar → 上传服务器 → 重启容器 → 健康检查（见 `.github/workflows/deploy.yml`）。
