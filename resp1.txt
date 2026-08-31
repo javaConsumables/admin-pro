@@ -1,0 +1,1 @@
+{"code":200,"message":"操作成功","data":{"id":5,"username":"concurrent","password":null,"salt":null,"nickname":null,"email":null,"phone":null,"status":1,"deleted":null,"createTime":null,"updateTime":null},"timestamp":1788178237931}

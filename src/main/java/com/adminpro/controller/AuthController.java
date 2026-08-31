@@ -4,6 +4,7 @@ import com.adminpro.common.Result;
 import com.adminpro.dto.LoginRequest;
 import com.adminpro.dto.LoginResponse;
 import com.adminpro.service.AuthService;
+import com.adminpro.service.PermissionService;
 import com.adminpro.vo.UserVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final PermissionService permissionService;
 
     @PostMapping("/login")
     public Result<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
@@ -37,5 +39,11 @@ public class AuthController {
     public Result<UserVO> me(HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
         return Result.success(authService.me(userId));
+    }
+
+    @GetMapping("/permissions")
+    public Result<java.util.Set<String>> permissions(HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
+        return Result.success(permissionService.getUserPerms(userId));
     }
 }

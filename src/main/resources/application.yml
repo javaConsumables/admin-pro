@@ -35,6 +35,8 @@ adminpro:
   jwt:
     secret: 6a9cc3941eb147ffa9265e848e2427303cb5233bb447f56dfc19a02501a2ec79
     expire-seconds: 7200
+  file:
+    upload-dir: ./uploads
 
 logging:
   level:
