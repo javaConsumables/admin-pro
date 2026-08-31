@@ -11,11 +11,11 @@ rem  然后双击本脚本，输入你的 GitHub 用户名即可。
 rem ============================================================
 set /p GH_USER=请输入你的 GitHub 用户名 [默认 javaConsumables]: 
 cd /d "%~dp0"
-git branch -M main
+rem 当前分支：dev（开发）/ main（发布）
 git remote remove origin 2>nul
 if "%GH_USER%"=="" set GH_USER=javaConsumables
 git remote add origin https://github.com/%GH_USER%/admin-pro.git
-git push -u origin main
+git push -u origin HEAD
 if %errorlevel%==0 (
   echo.
   echo 推送成功！仓库地址：https://github.com/%GH_USER%/admin-pro

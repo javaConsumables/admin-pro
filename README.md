@@ -19,6 +19,24 @@ JDK 17+ · SpringBoot 3.2.x · MyBatis-Plus 3.5.x · MySQL 8 · Redis 7 · JWT (
 - [x] Day 11-12 Docker 部署：多阶段 Dockerfile + docker-compose（MySQL/Redis/App）
 - [x] Day 13-14 演示与收尾：全流程验证
 
+## 开发流程（分支规范）
+
+```text
+dev 分支开发 → 测试通过 → 合并到 main → main 用于部署
+```
+
+- 日常开发、提交、推送都在 `dev` 分支：
+  ```bash
+  git checkout dev
+  git add -A && git commit -m "描述改动"
+  git push            # 推到 origin/dev
+  ```
+- 功能稳定后合并到 main 再部署：
+  ```bash
+  git checkout main && git merge dev && git push
+  ```
+- 服务器部署始终使用 main 分支（deploy.sh 默认拉取 main）。
+
 ## 接口一览
 
 | 方法 | 路径 | 说明 | 权限 |
