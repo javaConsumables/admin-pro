@@ -37,6 +37,20 @@ dev 分支开发 → 测试通过 → 合并到 main → main 用于部署
   ```
 - 服务器部署始终使用 main 分支（deploy.sh 默认拉取 main）。
 
+### 自动部署（GitHub Actions）
+
+`main` 分支有提交时，流水线自动：构建 jar → 上传服务器 → 重启容器 → 健康检查（见 `.github/workflows/deploy.yml`）。
+
+首次使用需在仓库配置 3 个 Actions secrets：
+
+| Secret | 值 |
+|---|---|
+| SERVER_HOST | 106.15.202.136 |
+| SERVER_USER | root |
+| SERVER_PASSWORD | 服务器 root 密码 |
+
+配置路径：仓库 Settings → Secrets and variables → Actions → New repository secret。
+
 ## 接口一览
 
 | 方法 | 路径 | 说明 | 权限 |

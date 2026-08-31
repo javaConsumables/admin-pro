@@ -1,0 +1,57 @@
+name: Deploy to Aliyun ECS
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Build jar
+        run: mvn -B -q -DskipTests package
+
+      - name: Upload jar to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          source: "target/admin-pro-0.0.1-SNAPSHOT.jar"
+          target: "/opt/admin-pro"
+
+      - name: Restart app container & health check
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            set -e
+            cd /opt/admin-pro
+            mv -f admin-pro-0.0.1-SNAPSHOT.jar app.jar
+            docker compose -f docker-compose.runtime.yml up -d --build app
+            for i in $(seq 1 12); do
+              if curl -s --max-time 3 http://127.0.0.1:8080/api/health | grep -q '"code":200'; then
+                echo "HEALTH OK after $((i*3))s"
+                exit 0
+              fi
+              sleep 3
+            done
+            echo "DEPLOY FAILED - app not healthy"
+            docker compose -f docker-compose.runtime.yml logs --tail 50 app
+            exit 1
