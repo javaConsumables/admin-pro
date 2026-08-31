@@ -3,8 +3,6 @@
 > GitHub 仓库：https://github.com/javaConsumables/admin-pro
 > 技术栈：SpringBoot 3 + MyBatis-Plus + MySQL 8 + Redis + JWT + Redisson + Docker
 
-基于 SpringBoot 3 + MyBatis-Plus + MySQL 8 + Redis + JWT + Redisson + Docker 的完整后台管理系统实战项目。
-
 ## 技术栈
 
 JDK 17+ · SpringBoot 3.2.x · MyBatis-Plus 3.5.x · MySQL 8 · Redis 7 · JWT (jjwt 0.12) · Redisson 3.x · Docker

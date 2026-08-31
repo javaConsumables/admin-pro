@@ -1,9 +1,0 @@
-admin-pro 推送 GitHub / Gitee 所需的 SSH 公钥
-====================================================
-
-将下面一整行内容添加到平台的 SSH 公钥设置中：
-
-GitHub：Settings -> SSH and GPG keys -> New SSH key
-Gitee ：设置 -> SSH公钥 -> 添加公钥
-
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDowUWIAZqKZzxjaMmQGRwxLEI+TVyTMtQVMxMupaPf8JNk/Ogbc5GakNBrEfMRdjdOT2gb1GpJBNd+zkMxSZoGL4EHMkJ9jl44wLtYb17KqvBDU8neIsAEbsPt+jp3MNd7MH7I0NQYe3Y+sGWwNd9H7cvQASKTidJ/SqHeJVtnlOBC/c5682hH60mzggdeKmKrDnnztHErsMuBcs6d/J6ZsGJF18xx3m53G3JgGsJWw6brbUh51d1k7nJWrFxtnugsnJlJdyzeKPEwBo57Avpr+96DnMMUdpEXHy5+nKHIDfsJ40xkCHDLlB8AkxUxPP4aRwZo35QXipuxnbEEIAn4z1pZbAsJPac95pP8tUz7FZPirxP7PPHuBCP3cyWh7Ro26GJH+a6+g8NB1M4n3mV5mC26HhbJqfjuirDdz/mtrOJj8Rq9Cgv1SJ2IT9uH5TX2NSTxk7UEDijYhJbHsfJRNUorHr+8RnlXzNwK+F/m6u9zv5ax1P8YODYywuJBh/E= gg1009851@gmail.com
