@@ -583,4 +583,7 @@ const App = {
   `
 };
 
-createApp(App).use(ElementPlus, { locale: ElementPlusLocaleZhCn }).mount('#app');
+const app = createApp(App);
+// 注册全局函数：模板中可直接使用 hasPerm(perms, 'system:user:list')
+app.config.globalProperties.hasPerm = hasPerm;
+app.use(ElementPlus, { locale: ElementPlusLocaleZhCn }).mount('#app');
