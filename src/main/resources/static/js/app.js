@@ -43,7 +43,7 @@ const LoginView = {
           <el-form-item>
             <el-button type="primary" size="large" style="width:100%" :loading="loading" @click="submit">登 录</el-button>
           </el-form-item>
-          <div style="text-align:center;color:#999;font-size:12px">演示账号：admin / admin123</div>
+          <div style="text-align:center;color:#999;font-size:12px">演示账号：zhangsan / 123456</div>
         </el-form>
       </el-card>
     </div>

@@ -109,7 +109,7 @@ CREATE TABLE sys_file (
 -- ===== 种子数据 =====
 -- 用户：admin/admin123、zhangsan/123456
 INSERT INTO sys_user (username, password, salt, nickname, status) VALUES
-('admin', 'bfb9d215350aef3d09848b6254d5451bfe4e77893c15d1853a4ef9afb032bab9', 'a0910dc36ad3bf5421aa1df9bcc668a0', '管理员', 1),
+('admin', '81f14b09809b98210248e62f5375d0e3af104199bede1bfde2a85a5012745cc5', '65b3968c63c3b9f0ac8f6450cd82443b', '管理员', 1),
 ('zhangsan', '7d8733bd76dd533eed007437c73eb3cf4b32df7d131c9509cbcf53779be3a93c', 'e27bc3c16f1b99c354e4b1f22be7fda3', '张三', 1);
 
 -- 角色
