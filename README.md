@@ -36,7 +36,7 @@ dev 分支开发 → 测试通过 → 合并到 main → main 用于部署
   ```bash
   git checkout main && git merge dev && git push
   ```
-- 服务器部署始终使用 main 分支（deploy.sh 默认拉取 main）。
+- **自动部署分支由 `deploy-branch.txt` 控制**：文件内容为 `main` 或 `dev`，修改并提交即可切换（无需改 workflow）。默认 `main`。
 
 ### 自动部署（GitHub Actions）
 

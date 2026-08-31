@@ -2,7 +2,7 @@ name: Deploy to Aliyun ECS
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, dev ]
   workflow_dispatch:
 
 concurrency:
@@ -16,27 +16,36 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 部署分支由 deploy-branch.txt 控制（内容：main 或 dev），改文件即切换
+      - name: Check deploy branch config
+        run: |
+          CONFIG=$(cat deploy-branch.txt | tr -d ' \r\n')
+          echo "配置的部署分支: $CONFIG"
+          echo "当前分支: ${{ github.ref_name }}"
+          if [ "$CONFIG" = "${{ github.ref_name }}" ]; then
+            echo "DEPLOY_ENABLED=true" >> "$GITHUB_ENV"
+            echo "命中配置，执行部署"
+          else
+            echo "跳过部署（配置分支 $CONFIG ≠ 当前分支 ${{ github.ref_name }}）"
+          fi
+
       - name: Setup JDK 17
+        if: env.DEPLOY_ENABLED == 'true'
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
       - name: Build jar
+        if: env.DEPLOY_ENABLED == 'true'
         run: mvn -B -q -DskipTests package
 
-      - name: Check secrets (diagnose)
-        run: |
-          if [ -z "${{ secrets.SERVER_HOST }}" ]; then echo "::error::SERVER_HOST 为空"; exit 1; fi
-          if [ -z "${{ secrets.SERVER_USER }}" ]; then echo "::error::SERVER_USER 为空"; exit 1; fi
-          if [ -z "${{ secrets.SERVER_PASSWORD }}" ]; then echo "::error::SERVER_PASSWORD 为空"; exit 1; fi
-          H="${{ secrets.SERVER_HOST }}"
-          echo "host 长度: ${#H}（正确应为 13: 106.15.202.136，若有空格请重新填写 Secret）"
-
       - name: Install sshpass
+        if: env.DEPLOY_ENABLED == 'true'
         run: sudo apt-get update -q && sudo apt-get install -y -q sshpass
 
       - name: Upload jar to server
+        if: env.DEPLOY_ENABLED == 'true'
         run: |
           sshpass -p "${{ secrets.SERVER_PASSWORD }}" scp -o StrictHostKeyChecking=no -o ConnectTimeout=20 \
             target/admin-pro-0.0.1-SNAPSHOT.jar \
@@ -44,6 +53,7 @@ jobs:
           echo "JAR UPLOADED"
 
       - name: Restart app & health check
+        if: env.DEPLOY_ENABLED == 'true'
         run: |
           sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=20 \
             ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} '
