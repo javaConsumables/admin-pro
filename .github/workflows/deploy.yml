@@ -32,6 +32,13 @@ jobs:
           if [ -z "${{ secrets.SERVER_PASSWORD }}" ]; then echo "::error::SERVER_PASSWORD 为空，请检查 Secrets"; exit 1; fi
           echo "Secrets 已配置（内容已脱敏）"
 
+      - name: Diagnose host & port (diagnose)
+        run: |
+          H="${{ secrets.SERVER_HOST }}"
+          echo "host 长度: ${#H}（正确应为 13: 106.15.202.136）"
+          if [ "${#H}" = "13" ]; then echo "长度正确"; else echo "长度异常 → SERVER_HOST 可能有空格/拼写错误"; fi
+          timeout 10 bash -c "exec 3<>/dev/tcp/$H/22 && echo PORT_22_OPEN" 2>&1 || echo "PORT_22_FAIL（连不上 → SERVER_HOST 可能填错）"
+
       - name: Test SSH connectivity (diagnose)
         uses: appleboy/ssh-action@v1.0.3
         with:
