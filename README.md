@@ -16,6 +16,16 @@ JDK 17+ · SpringBoot 3.2.x · MyBatis-Plus 3.5.x · MySQL 8 · Redis 7 · JWT (
 - [ ] Day 11-12 Docker 部署 + README
 - [ ] Day 13-14 演示走通 + 收尾
 
+## 本机 Redis（Windows 原生版）
+
+> 本机 Docker Desktop 端口转发异常，已改用原生 Windows Redis（redis-windows 8.10.1，msys2 构建）。
+> 位置：`C:\Users\yang\Documents\Deepseek\redis-win`
+
+- 启动：双击 `redis-win\start-redis.bat`（或后台运行 `redis-server.exe --port 6379`）
+- 停止：双击 `redis-win\stop-redis.bat`
+- 验证：`redis-win\Redis-8.10.1-Windows-x64-msys2\redis-cli.exe ping` → `PONG`
+- Docker 修复后可切回：`docker start admin-pro-redis`（先停原生 Redis，避免 6379 冲突）
+
 ## 快速开始
 
 1. 启动基础设施（Docker）：
