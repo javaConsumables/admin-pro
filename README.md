@@ -27,6 +27,16 @@ JDK 17+ · SpringBoot 3.2.x · MyBatis-Plus 3.5.x · MySQL 8 · Redis 7 · JWT (
 - 验证：`redis-win\Redis-8.10.1-Windows-x64-msys2\redis-cli.exe ping` → `PONG`
 - Docker 修复后可切回：`docker start admin-pro-redis`（先停原生 Redis，避免 6379 冲突）
 
+## 本机 MySQL（无需管理员）
+
+> 系统 MySQL80 服务无管理员权限无法启动，改用已安装的 mysqld 8.0.28 二进制 + 用户数据目录运行。
+> 数据目录：`C:\Users\yang\Documents\Deepseek\mysql8-data`（root/root，库 `admin_pro`）
+
+- 启动：双击 `mysql8-data\start-mysql.bat`
+- 停止：双击 `mysql8-data\stop-mysql.bat`
+- 验证：`mysql -h127.0.0.1 -P3306 -uroot -proot -e "SELECT 1"`
+- 注意：系统 MySQL80 服务需保持停止（占用 3306 会冲突）；重启电脑后需重新启动
+
 ## 快速开始
 
 1. 启动基础设施（Docker）：
