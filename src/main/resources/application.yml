@@ -21,7 +21,8 @@ spring:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD:}
+      # 默认不设密码；如需密码：set REDIS_PASSWORD=xxx 即可（null 默认值避免 Redisson 误发 AUTH）
+      password: ${REDIS_PASSWORD:#{null}}
       database: 0
       timeout: 5s
 
