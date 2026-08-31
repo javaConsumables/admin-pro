@@ -35,43 +35,29 @@ jobs:
       - name: Diagnose host & port (diagnose)
         run: |
           H="${{ secrets.SERVER_HOST }}"
-          echo "host 长度: ${#H}（正确应为 13: 106.15.202.136）"
-          if [ "${#H}" = "13" ]; then echo "长度正确"; else echo "长度异常 → SERVER_HOST 可能有空格/拼写错误"; fi
-          timeout 10 bash -c "exec 3<>/dev/tcp/$H/22 && echo PORT_22_OPEN" 2>&1 || echo "PORT_22_FAIL（连不上 → SERVER_HOST 可能填错）"
+          echo "host 长度: ${#H}（正确应为 13）"
+          timeout 10 bash -c "exec 3<>/dev/tcp/$H/22 && echo PORT_22_OPEN" 2>&1 || echo "PORT_22_FAIL"
 
-      - name: Test SSH connectivity (diagnose)
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          script: |
-            echo "SSH CONNECT OK"
-            hostname
-            whoami
+      - name: Install sshpass
+        run: sudo apt-get update -q && sudo apt-get install -y -q sshpass
 
       - name: Upload jar to server
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          source: "target/admin-pro-0.0.1-SNAPSHOT.jar"
-          target: "/opt/admin-pro"
+        run: |
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" scp -o StrictHostKeyChecking=no -o ConnectTimeout=20 \
+            target/admin-pro-0.0.1-SNAPSHOT.jar \
+            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/opt/admin-pro/
+          echo "JAR UPLOADED"
 
-      - name: Restart app container & health check
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          script: |
+      - name: Restart app & health check
+        run: |
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=20 \
+            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} '
             set -e
             cd /opt/admin-pro
             mv -f admin-pro-0.0.1-SNAPSHOT.jar app.jar
             docker compose -f docker-compose.runtime.yml up -d --build app
             for i in $(seq 1 12); do
-              if curl -s --max-time 3 http://127.0.0.1:8080/api/health | grep -q '"code":200'; then
+              if curl -s --max-time 3 http://127.0.0.1:8080/api/health | grep -q ""code":200"; then
                 echo "HEALTH OK after $((i*3))s"
                 exit 0
               fi
@@ -80,3 +66,4 @@ jobs:
             echo "DEPLOY FAILED - app not healthy"
             docker compose -f docker-compose.runtime.yml logs --tail 50 app
             exit 1
+          '
