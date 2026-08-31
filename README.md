@@ -4,6 +4,7 @@
 > 在线演示：http://106.15.202.136:8080 （演示账号 zhangsan / 123456）
 > 前端界面：http://106.15.202.136:8080/ （Vue 3 + Element Plus 管理后台，随应用一起部署）
 > 技术栈：SpringBoot 3 + MyBatis-Plus + MySQL 8 + Redis + JWT + Redisson + Docker
+> 开源协议：[MIT](LICENSE)
 
 ## 技术栈
 
