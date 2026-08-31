@@ -51,6 +51,53 @@ dev 分支开发 → 测试通过 → 合并到 main → main 用于部署
 
 配置路径：仓库 Settings → Secrets and variables → Actions → New repository secret。
 
+## 项目架构
+
+### 系统架构
+
+```mermaid
+flowchart TB
+    subgraph Client[客户端]
+        UI[Vue3 + Element Plus 管理界面]
+    end
+
+    subgraph App[应用层 · SpringBoot 3 :8080]
+        API[Controller 层]
+        AUTH[登录鉴权<br/>JWT + Redis 登录态]
+        RBAC[RBAC 权限<br/>@RequiresPermission + AOP]
+        LOG[操作日志<br/>AOP + @Async]
+        FILE[文件上传/下载/预览]
+        LOCK[防重复提交<br/>Redisson 分布式锁]
+    end
+
+    subgraph Data[数据层]
+        MYSQL[(MySQL 8<br/>sys_user/sys_role/sys_menu 等)]
+        REDIS[(Redis 7<br/>Token/缓存/分布式锁)]
+    end
+
+    UI --> API
+    API --> AUTH & RBAC & LOG & FILE & LOCK
+    AUTH --> REDIS
+    LOCK --> REDIS
+    RBAC --> MYSQL
+    LOG --> MYSQL
+    FILE --> MYSQL
+```
+
+### CI/CD 部署架构
+
+```mermaid
+flowchart LR
+    DEV[dev 分支<br/>日常开发] -->|合并| MAIN[main 分支]
+    MAIN -->|push 触发| ACTIONS[GitHub Actions]
+    ACTIONS -->|Maven 构建| JAR[admin-pro.jar]
+    JAR -->|scp 上传| ECS[阿里云 ECS]
+    ECS -->|docker compose 重启| APP[App 容器]
+    APP --> MYSQL[(MySQL 8)]
+    APP --> REDIS[(Redis 7)]
+    APP -->|健康检查通过| ONLINE[线上 8080 生效]
+```
+
 ## 接口一览
 
 | 方法 | 路径 | 说明 | 权限 |
