@@ -1,7 +1,7 @@
 # admin-pro 后台管理系统（个人实战项目）
 
 > GitHub 仓库：https://github.com/javaConsumables/admin-pro
-> 在线演示：http://106.15.202.136:8080 （演示账号 zhangsan / 123456）
+> 在线演示：http://106.15.202.136:8080 （演示账号 zhangsan / XaCHDhCvg21tA1）
 > 前端界面：http://106.15.202.136:8080/ （Vue 3 + Element Plus 管理后台，随应用一起部署）
 > 技术栈：SpringBoot 3 + MyBatis-Plus + MySQL 8 + Redis + JWT + Redisson + Docker
 > 开源协议：[MIT](LICENSE)
@@ -125,7 +125,7 @@ flowchart LR
 
 **鉴权**：`Authorization: Bearer <token>`；JWT 无状态 + Redis 登录态（单点，新登录顶旧 token）。
 **权限**：admin 角色放行全部；其余按 用户-角色-权限 三级校验（@RequiresPermission + AOP）。
-**种子账号**：`zhangsan / 123456`（普通用户，公开演示）；`admin` 为超管账号，密码不公开。
+**种子账号**：`zhangsan / XaCHDhCvg21tA1`（普通用户，公开演示）；`admin` 为超管账号，密码不公开。
 
 ## 本地开发（Windows 无管理员）
 

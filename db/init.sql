@@ -110,7 +110,7 @@ CREATE TABLE sys_file (
 -- 用户：admin（超管，密码不公开，部署后另行设置）、zhangsan/123456（演示用）
 INSERT INTO sys_user (username, password, salt, nickname, status) VALUES
 ('admin', '81f14b09809b98210248e62f5375d0e3af104199bede1bfde2a85a5012745cc5', '65b3968c63c3b9f0ac8f6450cd82443b', '管理员', 1),
-('zhangsan', '7d8733bd76dd533eed007437c73eb3cf4b32df7d131c9509cbcf53779be3a93c', 'e27bc3c16f1b99c354e4b1f22be7fda3', '张三', 1);
+('zhangsan', '5d584381ea650259adeb6611bdbfc2d46e9d6b64849fe83addb77c233770b3d1', 'aecd6943509939e54ec1257a322b5a07', '张三', 1);
 
 -- 角色
 INSERT INTO sys_role (role_name, role_code, status, remark) VALUES
