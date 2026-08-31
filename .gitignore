@@ -8,3 +8,10 @@ target/
 .DS_Store
 logs/
 *.log
+
+# 本地工具脚本（保留本地使用，不提交）
+start-dev.bat
+push-to-github.bat
+push-to-gitee.bat
+# 上传文件目录
+uploads/
