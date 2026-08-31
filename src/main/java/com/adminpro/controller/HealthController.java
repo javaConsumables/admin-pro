@@ -25,6 +25,7 @@ public class HealthController {
         Map<String, Object> info = new LinkedHashMap<>();
         info.put("app", appName);
         info.put("status", "UP");
+        info.put("version", "2.0.0");
         info.put("time", LocalDateTime.now().toString());
         return Result.success(info);
     }
