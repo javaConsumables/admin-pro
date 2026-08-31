@@ -45,7 +45,7 @@ JDK 17+ · SpringBoot 3.2.x · MyBatis-Plus 3.5.x · MySQL 8 · Redis 7 · JWT (
 
 **鉴权**：`Authorization: Bearer <token>`；JWT 无状态 + Redis 登录态（单点，新登录顶旧 token）。
 **权限**：admin 角色放行全部；其余按 用户-角色-权限 三级校验（@RequiresPermission + AOP）。
-**种子账号**：`admin/admin123`（超管）、`zhangsan/123456`（普通用户，仅有查看/上传权限）。
+**种子账号**：`zhangsan / 123456`（普通用户，公开演示）；`admin` 为超管账号，密码不公开。
 
 ## 本地开发（Windows 无管理员）
 
