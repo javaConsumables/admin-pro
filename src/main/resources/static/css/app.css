@@ -1,0 +1,19 @@
+body { margin: 0; font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Microsoft YaHei", Arial, sans-serif; background: #f0f2f5; }
+.layout { height: 100vh; }
+.el-aside { background: #001529; color: #fff; }
+.logo { height: 60px; line-height: 60px; text-align: center; font-size: 18px; font-weight: 700; color: #fff; background: #002140; }
+.el-menu { border-right: none; background: #001529; }
+.el-menu-item { color: rgba(255,255,255,.75); }
+.el-menu-item.is-active { color: #fff; background: #1890ff; }
+.el-menu-item:hover { background: #000c17; color: #fff; }
+.header { display: flex; align-items: center; justify-content: space-between; background: #fff; box-shadow: 0 1px 4px rgba(0,21,41,.08); }
+.header .title { font-size: 16px; font-weight: 600; }
+.user { cursor: pointer; color: #333; }
+.el-main { overflow-y: auto; }
+.login-wrap { height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1890ff 0%, #36cfc9 100%); }
+.login-card { width: 380px; }
+.login-title { text-align: center; font-size: 22px; font-weight: 700; margin-bottom: 8px; color: #333; }
+.login-sub { text-align: center; color: #999; margin-bottom: 24px; font-size: 13px; }
+.stat-card { margin-bottom: 16px; }
+.toolbar { margin-bottom: 12px; display: flex; gap: 8px; }
+.pager { margin-top: 12px; display: flex; justify-content: flex-end; }
