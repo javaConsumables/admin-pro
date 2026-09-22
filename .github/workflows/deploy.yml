@@ -34,8 +34,12 @@ jobs:
 
       - name: Upload jar to server
         timeout-minutes: 5
+        env:
+          SSHPASS: ${{ secrets.SERVER_PASSWORD }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
         run: |
-          SSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=20 -o ServerAliveInterval=10 -o ServerAliveCountMax=2 -o TCPKeepAlive=yes"
+          SSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=20 -o ServerAliveInterval=10 -o ServerAliveCountMax=2 -o TCPKeepAlive=yes -o PreferredAuthentications=password -o PubkeyAuthentication=no -o GSSAPIAuthentication=no"
           LOCAL_JAR="target/admin-pro-0.0.1-SNAPSHOT.jar"
           REMOTE_JAR="/opt/admin-pro/admin-pro-0.0.1-SNAPSHOT.jar"
 
@@ -48,8 +52,7 @@ jobs:
             fi
 
             if printf '%s\n' "${SFTP_COMMAND}" | timeout --kill-after=10s 90s \
-              sshpass -p "${{ secrets.SERVER_PASSWORD }}" \
-              sftp -b - ${SSH_OPTS} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}; then
+              sshpass -e sftp ${SSH_OPTS} "${SERVER_USER}@${SERVER_HOST}"; then
               echo "JAR UPLOADED"
               exit 0
             fi
@@ -61,9 +64,14 @@ jobs:
 
       - name: Restart app & health check
         timeout-minutes: 3
+        env:
+          SSHPASS: ${{ secrets.SERVER_PASSWORD }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
         run: |
-          sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=20 \
-            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} '
+          sshpass -e ssh -o StrictHostKeyChecking=no -o ConnectTimeout=20 \
+            -o PreferredAuthentications=password -o PubkeyAuthentication=no -o GSSAPIAuthentication=no \
+            "${SERVER_USER}@${SERVER_HOST}" '
             set -e
             cd /opt/admin-pro
             mv -f admin-pro-0.0.1-SNAPSHOT.jar app.jar
