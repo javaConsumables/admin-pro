@@ -26,6 +26,7 @@ services:
     ports:
       - "8080:8080"
     environment:
+      SPRING_PROFILES_ACTIVE: prod
       DB_URL: jdbc:mysql://mysql:3306/admin_pro?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
       DB_USERNAME: root
       DB_PASSWORD: root

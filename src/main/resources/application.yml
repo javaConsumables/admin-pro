@@ -4,19 +4,17 @@ server:
 spring:
   application:
     name: admin-pro
+  profiles:
+    # local: local development; prod: production deployment
+    active: local
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DB_URL:jdbc:mysql://localhost:3306/admin_pro?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true}
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:root}
     hikari:
       maximum-pool-size: 10
       minimum-idle: 2
       connection-timeout: 30000
   data:
     redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
       database: 0
       timeout: 5s
 
@@ -37,7 +35,3 @@ adminpro:
     expire-seconds: 7200
   file:
     upload-dir: ./uploads
-
-logging:
-  level:
-    com.adminpro: debug

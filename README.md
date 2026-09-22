@@ -63,7 +63,7 @@ flowchart TB
         UI[Vue3 + Element Plus 管理界面]
     end
 
-    subgraph App[应用层 · SpringBoot 3 :8080]
+    subgraph App[应用层   SpringBoot 3 :8080]
         API[Controller 层]
         AUTH[登录鉴权<br/>JWT + Redis 登录态]
         RBAC[RBAC 权限<br/>@RequiresPermission + AOP]
@@ -146,7 +146,7 @@ docker compose up -d --build
 curl http://服务器IP:8080/api/health
 ```
 
-首次启动时 mysql 容器会自动执行 `db/init.sql` 建表并写入种子数据。应用配置通过环境变量注入（DB_URL/DB_USERNAME/DB_PASSWORD/REDIS_HOST/REDIS_PORT）。
+首次启动时 mysql 容器会自动执行 `db/init.sql` 建表并写入种子数据。应用默认使用 `local` 配置，Docker 部署使用 `prod` 配置；环境相关配置通过 `SPRING_PROFILES_ACTIVE` 选择，并通过环境变量注入（DB_URL/DB_USERNAME/DB_PASSWORD/REDIS_HOST/REDIS_PORT）。
 
 > ⚠️ Docker 首次初始化 MySQL 时中文可能双重编码（昵称/菜单名乱码），修复：
 > `cat db/fix-chinese-encoding.sql | docker exec -i admin-pro-mysql mysql -uroot -proot`
@@ -170,7 +170,9 @@ src/main/java/com/adminpro/
 ├── interceptor/      # JWT 鉴权拦截器
 ├── service/          # 业务逻辑（登录、权限、用户缓存）
 └── util/             # JWT、密码加盐哈希
-src/main/resources/application.yml
+src/main/resources/application.yml          # 公共配置
+src/main/resources/application-local.yml    # 本地配置
+src/main/resources/application-prod.yml     # 生产配置
 db/init.sql           # 全量建表 + 种子数据（幂等）
 Dockerfile / docker-compose.yml
 ```

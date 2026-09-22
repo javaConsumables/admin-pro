@@ -12,7 +12,8 @@ FROM eclipse-temurin:17-jre
 WORKDIR /app
 COPY --from=build /app/target/admin-pro-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
-ENV DB_URL=jdbc:mysql://mysql:3306/admin_pro?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true \
+ENV SPRING_PROFILES_ACTIVE=prod \
+    DB_URL="jdbc:mysql://mysql:3306/admin_pro?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true" \
     DB_USERNAME=root \
     DB_PASSWORD=root \
     REDIS_HOST=redis \
