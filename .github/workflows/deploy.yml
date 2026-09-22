@@ -12,6 +12,7 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,21 +22,45 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+          cache: maven
 
       - name: Build jar
+        timeout-minutes: 5
         run: mvn -B -q -DskipTests package
 
       - name: Install sshpass
+        timeout-minutes: 3
         run: sudo apt-get update -q && sudo apt-get install -y -q sshpass
 
       - name: Upload jar to server
+        timeout-minutes: 5
         run: |
-          sshpass -p "${{ secrets.SERVER_PASSWORD }}" scp -o StrictHostKeyChecking=no -o ConnectTimeout=20 \
-            target/admin-pro-0.0.1-SNAPSHOT.jar \
-            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/opt/admin-pro/
-          echo "JAR UPLOADED"
+          SSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=20 -o ServerAliveInterval=10 -o ServerAliveCountMax=2 -o TCPKeepAlive=yes"
+          LOCAL_JAR="target/admin-pro-0.0.1-SNAPSHOT.jar"
+          REMOTE_JAR="/opt/admin-pro/admin-pro-0.0.1-SNAPSHOT.jar"
+
+          for attempt in 1 2 3; do
+            echo "Upload attempt ${attempt}/3"
+            if [ "${attempt}" -eq 1 ]; then
+              SFTP_COMMAND="put ${LOCAL_JAR} ${REMOTE_JAR}"
+            else
+              SFTP_COMMAND="reput ${LOCAL_JAR} ${REMOTE_JAR}"
+            fi
+
+            if printf '%s\n' "${SFTP_COMMAND}" | timeout --kill-after=10s 90s \
+              sshpass -p "${{ secrets.SERVER_PASSWORD }}" \
+              sftp -b - ${SSH_OPTS} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}; then
+              echo "JAR UPLOADED"
+              exit 0
+            fi
+            echo "Upload attempt ${attempt} failed"
+            sleep 5
+          done
+          echo "JAR UPLOAD FAILED"
+          exit 1
 
       - name: Restart app & health check
+        timeout-minutes: 3
         run: |
           sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=20 \
             ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} '
