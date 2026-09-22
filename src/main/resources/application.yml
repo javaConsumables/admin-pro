@@ -6,7 +6,7 @@ spring:
     name: admin-pro
   profiles:
     # local: local development; prod: production deployment
-    active: local
+    active: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
